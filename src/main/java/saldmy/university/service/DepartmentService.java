@@ -1,43 +1,25 @@
 package saldmy.university.service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import saldmy.university.entity.Degree;
 import saldmy.university.entity.Department;
 import saldmy.university.entity.Lector;
-import saldmy.university.entity.aggregation.DegreeCount;
-import saldmy.university.repository.DepartmentRepository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
-public class DepartmentService {
+public interface DepartmentService {
 
-    private final DepartmentRepository repository;
+    Optional<Lector> getDepartmentHead(String departmentName);
 
-    public DepartmentService(DepartmentRepository repository) {
-        this.repository = repository;
-    }
+    Optional<Map<Degree, Integer>> getDepartmentStatistics(String departmentName);
 
-    public Optional<Lector> getDepartmentHead(String departmentName) {
-        return repository.findHeadByName(departmentName);
-    }
+    Optional<Integer> getAverageSalary(String departmentName);
 
-    public List<DegreeCount> getDepartmentStatistics(String departmentName) {
-        return repository.showDegreeCount(departmentName);
-    }
+    Optional<Long> getEmployeeCount(String departmentName);
 
-    public Optional<Integer> getAverageSalary(String departmentName) {
-        return repository.getAvgSalary(departmentName);
-    }
-
-    public Optional<Integer> getEmployeeCount(String departmentName) {
-        return repository.getEmployeeCount(departmentName);
-    }
-
-    public List<Department> searchByTemplate(String templateName) {
-        return repository.findAllByNameContaining(templateName);
-    }
+    List<Department> searchByTemplate(String templateName);
 
 }

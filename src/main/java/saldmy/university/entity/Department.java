@@ -31,7 +31,7 @@ public class Department {
     @OneToMany(mappedBy = "department")
     private List<LectorDepartment> lectorDepartments = new ArrayList<>();
 
-    @Column(nullable = false, updatable = false)
+    @Column(updatable = false)
     @CreationTimestamp
     private Instant created;
 

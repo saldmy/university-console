@@ -26,7 +26,7 @@ public class LectorDepartment {
     @JoinColumn(nullable = false)
     private Department department;
 
-    @Column(nullable = false, updatable = false)
+    @Column(updatable = false)
     @CreationTimestamp
     private Instant created;
 

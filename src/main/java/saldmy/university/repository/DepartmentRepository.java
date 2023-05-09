@@ -2,38 +2,48 @@ package saldmy.university.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import saldmy.university.entity.Degree;
 import saldmy.university.entity.Department;
 import saldmy.university.entity.Lector;
 import saldmy.university.entity.aggregation.DegreeCount;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
 
-    Optional<Department> findByName(String name);
+    boolean existsByNameIgnoreCase(String name);
 
-    List<Department> findAllByNameContaining(String name);
+    List<Department> findAllByNameContainingIgnoreCase(String name);
 
-    @Query( "select d.head" +
-            "from Department d" +
-            "where d.name = :name")
+    @Query( "select d.head " +
+            "from Department d " +
+            "where lower(d.name) = lower(:name) ")
     Optional<Lector> findHeadByName(String name);
 
-    @Query( "select ld.lector.degree, count(ld.lector.degree) " +
+    @Query( "select l.degree, count(l.degree) " +
             "from LectorDepartment ld " +
-            "where ld.department.name = :name " +
-            "group by ld.lector.degree")
+            "join ld.lector l " +
+            "join ld.department d " +
+            "where lower(d.name) = lower(:name) " +
+            "group by l.degree ")
+//    @Query( "select l.degree, count(l.degree) " +
+//            "from Department d " +
+//            "join d.lectorDepartments ld " +
+//            "join ld.lector l " +
+//            "where lower(d.name) = lower(:name) " +
+//            "group by l.degree")
     List<DegreeCount> showDegreeCount(String name);
 
-    @Query( "select avg(ld.lector.salary)" +
-            "from LectorDepartment ld" +
-            "where ld.department.name = :name")
+    @Query( "select avg(ld.lector.salary) " +
+            "from LectorDepartment ld " +
+            "where lower(ld.department.name) = lower(:name) ")
     Optional<Integer> getAvgSalary(String name);
 
-    @Query( "select count(ld)" +
-            "from LectorDepartment ld" +
-            "where ld.department = :name")
-    Optional<Integer> getEmployeeCount(String name);
+    @Query( "select count(ld) " +
+            "from LectorDepartment ld " +
+            "where lower(ld.department.name) = lower(:name) ")
+    Optional<Long> getEmployeeCount(String name);
 
 }

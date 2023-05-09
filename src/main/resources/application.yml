@@ -13,4 +13,4 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create-drop
-      check-nullability: true
+
