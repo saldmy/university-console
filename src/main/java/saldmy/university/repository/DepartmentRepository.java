@@ -2,13 +2,11 @@ package saldmy.university.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import saldmy.university.entity.Degree;
 import saldmy.university.entity.Department;
 import saldmy.university.entity.Lector;
 import saldmy.university.entity.aggregation.DegreeCount;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
@@ -22,18 +20,12 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
             "where lower(d.name) = lower(:name) ")
     Optional<Lector> findHeadByName(String name);
 
-    @Query( "select l.degree, count(l.degree) " +
+    @Query( "select new saldmy.university.entity.aggregation.DegreeCount(l.degree, count(l.degree)) " +
             "from LectorDepartment ld " +
             "join ld.lector l " +
             "join ld.department d " +
             "where lower(d.name) = lower(:name) " +
             "group by l.degree ")
-//    @Query( "select l.degree, count(l.degree) " +
-//            "from Department d " +
-//            "join d.lectorDepartments ld " +
-//            "join ld.lector l " +
-//            "where lower(d.name) = lower(:name) " +
-//            "group by l.degree")
     List<DegreeCount> showDegreeCount(String name);
 
     @Query( "select avg(ld.lector.salary) " +

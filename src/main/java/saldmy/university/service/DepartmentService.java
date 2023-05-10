@@ -14,7 +14,7 @@ public interface DepartmentService {
 
     Optional<Lector> getDepartmentHead(String departmentName);
 
-    Optional<Map<Degree, Integer>> getDepartmentStatistics(String departmentName);
+    Optional<Map<Degree, Long>> getDepartmentStatistics(String departmentName);
 
     Optional<Integer> getAverageSalary(String departmentName);
 

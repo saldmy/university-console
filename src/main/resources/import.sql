@@ -2,4 +2,4 @@ INSERT INTO lector (id, firstname, lastname, degree, salary) VALUES (1, 'Gary', 
 
 INSERT INTO department (id, name, head_id) VALUES (1, 'Anthropology', 3), (2, 'Chemistry', 9), (3, 'Biochemistry', 6), (4, 'Biology', 12), (5, 'Microbiology', 15);
 
-INSERT INTO lector_department (department_id, lector_id) VALUES (1, 3), (1, 1), (1, 3), (2, 9), (2, 7), (2, 8), (3, 6), (3, 4), (3, 5), (4, 12), (4, 10), (4, 11), (5, 15), (5, 13), (5, 14), (1, 15), (1, 5), (2, 1), (2, 2), (4, 6), (4, 5), (5, 2);
+INSERT INTO lector_department (department_id, lector_id) VALUES (1, 3), (1, 1), (1, 3), (2, 9), (2, 7), (2, 8), (3, 6), (3, 5), (4, 12), (4, 10), (4, 11), (5, 15), (5, 13), (5, 14), (1, 15), (1, 5), (2, 1), (2, 2), (4, 6), (4, 5), (5, 2);

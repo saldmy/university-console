@@ -8,10 +8,11 @@ import saldmy.university.entity.Lector;
 import saldmy.university.entity.aggregation.DegreeCount;
 import saldmy.university.repository.DepartmentRepository;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toMap;
-import static java.util.stream.Collectors.toUnmodifiableMap;
 
 @Service
 @Transactional(readOnly = true)
@@ -29,23 +30,18 @@ public class DepartmentServiceImpl implements saldmy.university.service.Departme
     }
 
     @Override
-    public Optional<Map<Degree, Integer>> getDepartmentStatistics(String departmentName) {
+    public Optional<Map<Degree, Long>> getDepartmentStatistics(String departmentName) {
         if (!repository.existsByNameIgnoreCase(departmentName)) {
             return Optional.empty();
         }
 
         List<DegreeCount> degreeCounts = repository.showDegreeCount(departmentName);
 
-//        return departmentStatistics.stream()
-//                .collect(toMap(
-//                        DegreeCount::getDegree,
-//                        DegreeCount::getDegreeCount,
-//                        Long::sum));
-        System.out.println(degreeCounts);
-        System.out.println(degreeCounts.get(0).getDegree());
-
-
-        return Optional.of(new HashMap<>());
+        return Optional.of(degreeCounts.stream()
+                .collect(toMap(
+                        DegreeCount::getDegree,
+                        DegreeCount::getCount,
+                        Long::sum)));
     }
 
     @Override

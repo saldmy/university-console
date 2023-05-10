@@ -12,6 +12,8 @@ import java.util.stream.Stream;
 
 public class GlobalSearchCommand implements Command {
 
+    private static final String NOTHING_FOUND = "Unfortunately, nothing was found with '%s'.";
+
     private final LectorService lectorService;
     private final DepartmentService departmentService;
     private final String template;
@@ -27,10 +29,12 @@ public class GlobalSearchCommand implements Command {
         List<Lector> lectors = lectorService.findByTemplate(template);
         List<Department> departments = departmentService.searchByTemplate(template);
 
-        return Stream.concat(
+        String result =  Stream.concat(
                 lectors.stream().map(lector -> lector.getFirstname() + " " + lector.getLastname()),
                 departments.stream().map(Department::getName)
         ).collect(Collectors.joining(", "));
+
+        return !result.isEmpty() ? result : NOTHING_FOUND.formatted(template);
     }
 
     @Override
